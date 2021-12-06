@@ -37,12 +37,13 @@ public class ImageOcrResource {
     }
 
     @PostMapping("/ocr/image")
-    public UUID doOcr(@RequestParam("file") MultipartFile file) {
+    public UUID doOcr(@RequestParam("file") MultipartFile file, @RequestParam("reason") String reason,
+                       @RequestParam("description") String description) {
         UUID imageID = UUID.randomUUID();
         try {
             File image = new File(System.getProperty("java.io.tmpdir")+"/"+file.getName());
             file.transferTo(image);
-            storageService.store(image, imageID);
+            storageService.store(image, imageID, reason, description);
             return imageID;
         } catch (Exception e) {
             e.printStackTrace();

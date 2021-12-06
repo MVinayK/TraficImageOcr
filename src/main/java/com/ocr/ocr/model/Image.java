@@ -26,6 +26,12 @@ public class Image {
     @Column(name = "platenumber")
     private String plateNumber;
 
+    @Column(name = "reason")
+    private String reason;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "createddate")
     private LocalDateTime createdDate;
 }

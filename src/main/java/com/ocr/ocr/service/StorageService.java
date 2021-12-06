@@ -42,15 +42,14 @@ public class StorageService {
     @Autowired
     private AmazonS3 s3client;
 
-    public void store(File file, UUID imageID) {
+    public void store(File file, UUID imageID, String reason, String description) {
         LocalDate date = LocalDate.now();
         System.out.println(date);
         System.out.printf("File name : " + file.getName());
         try {
             String imgPath = date+"/" + imageID;
-            //check why plate number is null
             String plateNumber = imageOcrService.doOcr(file);
-            imageService.insertImageDate(getImageEntity(imageID, imgPath, plateNumber));
+            imageService.insertImageDate(getImageEntity(imageID, imgPath, plateNumber, reason, description));
             s3client.putObject(new PutObjectRequest(BUCKET_NAME, imgPath, file));
         } catch (AmazonServiceException e) {
             throw new AmazonServiceException(e.getErrorMessage());
@@ -58,11 +57,13 @@ public class StorageService {
 
     }
 
-    private Image getImageEntity(UUID imageID, String imgPath, String plateNumber) {
+    private Image getImageEntity(UUID imageID, String imgPath, String plateNumber, String reason, String desc) {
         return Image.builder()
                 .imageId(imageID.toString())
                 .imagePath(imgPath)
                 .plateNumber(plateNumber)
+                .reason(reason)
+                .description(desc)
                 .createdDate(LocalDateTime.now())
                 .build();
     }

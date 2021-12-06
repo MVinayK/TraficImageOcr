@@ -3,6 +3,8 @@ package com.ocr.ocr.service;
 import net.sourceforge.tess4j.Tesseract;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 @Service
@@ -29,8 +31,9 @@ public class ImageOcrService {
 
     public String doOcr(File image) {
         try {
-            tesseract.setDatapath(tessData);
-            String text=tesseract.doOCR(image);
+            tesseract.setDatapath(new File(tessData).getPath());
+            BufferedImage in = ImageIO.read(image);
+            String text=tesseract.doOCR(in);
             text=text.replaceAll("[^a-zA-Z0-9]", "");
             return text;
         } catch (Exception e) {
