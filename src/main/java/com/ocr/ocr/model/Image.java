@@ -32,6 +32,9 @@ public class Image {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "processed")
+    private String processed;
+
     @Column(name = "createddate")
     private LocalDateTime createdDate;
 }
