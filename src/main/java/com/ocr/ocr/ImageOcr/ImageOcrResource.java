@@ -1,6 +1,7 @@
 package com.ocr.ocr.ImageOcr;
 
 import com.ocr.ocr.model.Image;
+import com.ocr.ocr.service.AmountCalculateService;
 import com.ocr.ocr.service.ImageOcrService;
 import com.ocr.ocr.service.ImageService;
 import com.ocr.ocr.service.StorageService;
@@ -29,6 +30,9 @@ public class ImageOcrResource {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private AmountCalculateService scheduleService;
 
     @GetMapping("/hello")
     public String sayHello() {
@@ -81,6 +85,7 @@ public class ImageOcrResource {
         System.out.println(imageId);
         System.out.println(number);
         imageService.updatePlateNumber(imageId, number);
+        scheduleService.scheduleChallan(imageId);
     }
 
 }
